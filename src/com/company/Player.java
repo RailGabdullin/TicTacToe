@@ -5,9 +5,12 @@ public class Player {
     private char symbol;
     private String name;
 
-    public Player(char symbol, String name) {
+    private boolean isHuman;
+
+    public Player(char symbol, String name, boolean isHuman) {
         this.symbol = symbol;
         this.name = name;
+        this.isHuman = isHuman;
     }
 
     public char getSymbol() {
@@ -16,5 +19,9 @@ public class Player {
 
     public String getName(){
         return name;
+    }
+
+    public boolean isHuman() {
+        return isHuman;
     }
 }

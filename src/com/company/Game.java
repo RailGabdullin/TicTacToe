@@ -1,15 +1,18 @@
 package com.company;
 
+import java.util.Scanner;
+
 public class Game {
 
-    Player player1;
-    Player player2;
-    Map map;
+    private Player player1;
+    private Player player2;
+    private Map map;
 
-    Player winner;
+    private Player winner;
+    private Scanner scanner = new Scanner(System.in);
 
-    boolean tie;
-    Player currentPlayer;
+    private Player currentPlayer;
+
     public Game( Map map, Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
@@ -27,23 +30,44 @@ public class Game {
     }
 
     public void nextStep (){
-        int x = (int) (Math.random() * map.getSize());
-        int y = (int) (Math.random() * map.getSize());
-            while (map.isFree(x, y)){
+        int x;
+        int y;
+
+        System.out.println("Выполняется функция следующего хода");
+
+        if (currentPlayer.isHuman()){
+            System.out.println("Ваш ход: ");
+            do{
+                x = scanner.nextInt();
+                y = scanner.nextInt();
+                if (map.isValid(x,y)){
+                    if (!map.isFree(x,y)){
+                        System.out.println("Эта ячейка занята, выберите другую: ");
+                    }
+                } else System.out.println("Такой ячейки не существует, выберите другую: ");
+            } while (!map.isFree(x, y));
+        } else {
+
+            //Генерируем ход в случайную ячеку пока не найдем свободную
+            do {
                 x = (int) (Math.random() * map.getSize());
                 y = (int) (Math.random() * map.getSize());
-                if (map.isFree(x,y)){ map.put(currentPlayer , x , y);
-                map.printMap();
-
-                if(currentPlayer == player1){
-                    currentPlayer = player2;
-                } else {
-                    currentPlayer = player1;
-                }
-
-                }
+                System.out.println("Сгенерировали ход автоматически");
             }
+            while (!map.isFree(x, y));
+        }
+        //Ставим символ в свободную ячейку и печатаем новую карту
+        map.put(currentPlayer, x, y);
+        map.printMap();
 
+        //Передаем ход другому игроку
+        if (currentPlayer == player1) {
+            currentPlayer = player2;
+            System.out.println("Передал ход от 1 к 2");
+        } else {
+            currentPlayer = player1;
+            System.out.println("Передал ход от 2 к 1");
+        }
     }
 
     public boolean checkWinner(){

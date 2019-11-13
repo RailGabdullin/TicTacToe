@@ -42,8 +42,8 @@ public class Map {
         }
     }
 
-    public boolean isFree (int x, int y){
-        return map[x][y] == noSymbol;
+    public boolean isFree (int x, int y) {
+        return isValid(x, y) && map[x][y] == noSymbol;
     }
 
     public int getSize() {
@@ -60,6 +60,10 @@ public class Map {
 
     public char getNoSymbol() {
         return noSymbol;
+    }
+
+    public boolean isValid(int x, int y){
+        return x >= 0 && x <= mapSize - 1 && y >= 0 && y <= mapSize - 1;
     }
 
 

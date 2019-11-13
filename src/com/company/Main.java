@@ -14,19 +14,18 @@ public class Main {
     private static Player player2;
     private static Map map;
     private static Game game;
+    private static boolean player1IsHuman = true;
+    private static boolean player2IsHuman = false;
 
     public static void main(String[] args) {
 
-        System.out.println("Введите имя первого игрока");
-
         Scanner scanner = new Scanner(System.in);
-
-        player1 = new Player(playerChar1, scanner.nextLine());
+        System.out.println("Введите имя первого игрока");
+        player1 = new Player(playerChar1, scanner.nextLine(), player1IsHuman);
 
 
         System.out.println("Введите имя второго игрока");
-        Scanner scanner2 = new Scanner(System.in);
-        player2 = new Player(playerChar2, scanner2.nextLine());
+        player2 = new Player(playerChar2, scanner.nextLine(), player2IsHuman);
 
         map = new Map(mapSize, player1, player2);
         game = new Game(map, player1,player2);
@@ -37,6 +36,7 @@ public class Main {
         while (onGame){
             if (!game.checkWinner() && !game.checkTie()){
                 game.nextStep();
+                System.out.println("Сработало условие для следующего хода");
             } else {
                 if (game.checkWinner()){
                     System.out.println("Победил " + game.getWinner().getName() + ", который играет за " + game.getWinner().getSymbol());} else {
