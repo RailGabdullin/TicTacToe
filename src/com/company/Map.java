@@ -2,14 +2,14 @@ package com.company;
 
 public class Map {
 
-    private static int mapSize;
+    private int mapSize;
 
     private char [][] map;
 
-    private static char player1;
-    private static char player2;
+    private char player1;
+    private char player2;
 
-    private static char noSymbol;
+    private char noSymbol;
 
     public Map(int mapSize, Player player1, Player player2){
         this.mapSize = mapSize;
@@ -46,7 +46,7 @@ public class Map {
         return map[x][y] == noSymbol;
     }
 
-    public static int getSize() {
+    public int getSize() {
         return mapSize;
     }
 
@@ -58,8 +58,9 @@ public class Map {
         return map[x][y];
     }
 
-    public static char getNoSymbol() {
+    public char getNoSymbol() {
         return noSymbol;
     }
+
 
 }

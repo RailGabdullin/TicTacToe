@@ -48,50 +48,114 @@ public class Game {
 
     public boolean checkWinner(){
 
-        //Ща будет хардкод, переделать
-        if (
-                //Проверяем горизонтали
-                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(0,1) && map.getMapXY(0,1) == map.getMapXY(0,2))||
-                (map.getMapXY(1,0) == player1.getSymbol()) && (map.getMapXY(1,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(1,2))||
-                (map.getMapXY(2,0) == player1.getSymbol()) && (map.getMapXY(2,0) == map.getMapXY(2,1) && map.getMapXY(2,1) == map.getMapXY(2,2))||
+//        //Ща будет хардкод, переделать
+//        if (
+//                //Проверяем горизонтали
+//                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(0,1) && map.getMapXY(0,1) == map.getMapXY(0,2))||
+//                (map.getMapXY(1,0) == player1.getSymbol()) && (map.getMapXY(1,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(1,2))||
+//                (map.getMapXY(2,0) == player1.getSymbol()) && (map.getMapXY(2,0) == map.getMapXY(2,1) && map.getMapXY(2,1) == map.getMapXY(2,2))||
+//
+//                        //Проверяем вертикали
+//                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,0) && map.getMapXY(1,0) == map.getMapXY(2,0))||
+//                (map.getMapXY(0,1) == player1.getSymbol()) && (map.getMapXY(0,1) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,1))||
+//                (map.getMapXY(0,2) == player1.getSymbol()) && (map.getMapXY(0,2) == map.getMapXY(1,2) && map.getMapXY(1,2) == map.getMapXY(2,2))||
+//
+//                        //Проверяем диагонали
+//                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,2))||
+//                (map.getMapXY(2,2) == player1.getSymbol()) && (map.getMapXY(2,2) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(0,0))
+//
+//                ){
+//            winner = player1;
+//            return true;
+//        } else if (
+//            //Проверяем горизонтали
+//            (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(0,1) && map.getMapXY(0,1) == map.getMapXY(0,2))||
+//                    (map.getMapXY(1,0) == player2.getSymbol()) && (map.getMapXY(1,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(1,2))||
+//                    (map.getMapXY(2,0) == player2.getSymbol()) && (map.getMapXY(2,0) == map.getMapXY(2,1) && map.getMapXY(2,1) == map.getMapXY(2,2))||
+//
+//                    //Проверяем вертикали
+//                    (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,0) && map.getMapXY(1,0) == map.getMapXY(2,0))||
+//                    (map.getMapXY(0,1) == player2.getSymbol()) && (map.getMapXY(0,1) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,1))||
+//                    (map.getMapXY(0,2) == player2.getSymbol()) && (map.getMapXY(0,2) == map.getMapXY(1,2) && map.getMapXY(1,2) == map.getMapXY(2,2))||
+//
+//                    //Проверяем диагонали
+//                    (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,2))||
+//                    (map.getMapXY(2,2) == player2.getSymbol()) && (map.getMapXY(2,2) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(0,0))
+//                ){
+//            winner = player2;
+//            return true;
+//        } else { return false; }
 
-                        //Проверяем вертикали
-                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,0) && map.getMapXY(1,0) == map.getMapXY(2,0))||
-                (map.getMapXY(0,1) == player1.getSymbol()) && (map.getMapXY(0,1) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,1))||
-                (map.getMapXY(0,2) == player1.getSymbol()) && (map.getMapXY(0,2) == map.getMapXY(1,2) && map.getMapXY(1,2) == map.getMapXY(2,2))||
+        int countOfSameSymbolsHorizontal;
+        int countOfSameSymbolsVertical;
+        int countOfSameSymbolsDiagonal1 = 0;
+        int countOfSameSymbolsDiagonal2 = 0;
+        boolean result = false;
 
-                        //Проверяем диагонали
-                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,2))||
-                (map.getMapXY(2,2) == player1.getSymbol()) && (map.getMapXY(2,2) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(0,0))
+        for (int i = 0; i < map.getSize(); i++) {
+            countOfSameSymbolsHorizontal = 0;
+            countOfSameSymbolsVertical = 0;
+            for (int j = 0; j < map.getSize(); j++) {
 
-                ){
-            winner = player1;
-            return true;
-        } else if (
-            //Проверяем горизонтали
-            (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(0,1) && map.getMapXY(0,1) == map.getMapXY(0,2))||
-                    (map.getMapXY(1,0) == player2.getSymbol()) && (map.getMapXY(1,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(1,2))||
-                    (map.getMapXY(2,0) == player2.getSymbol()) && (map.getMapXY(2,0) == map.getMapXY(2,1) && map.getMapXY(2,1) == map.getMapXY(2,2))||
+                //Горизонтали
+                if (j < map.getSize() - 1 &&
+                map.getMapXY(i, j) == map.getMapXY(i, j+1)&&
+                        !map.isFree(i,j)
+                        ){
+                    countOfSameSymbolsHorizontal ++;
+                    if (countOfSameSymbolsHorizontal == map.getSize() - 1){
+                        result = true;
+                        winner = getPlayer(map.getMapXY(i,j));
+                        System.out.println("Гор " + i + " " + j + " " + countOfSameSymbolsHorizontal);
+                    }
+                }
 
-                    //Проверяем вертикали
-                    (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,0) && map.getMapXY(1,0) == map.getMapXY(2,0))||
-                    (map.getMapXY(0,1) == player2.getSymbol()) && (map.getMapXY(0,1) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,1))||
-                    (map.getMapXY(0,2) == player2.getSymbol()) && (map.getMapXY(0,2) == map.getMapXY(1,2) && map.getMapXY(1,2) == map.getMapXY(2,2))||
+                //Вертикали
+                if (j < map.getSize() - 1 &&
+                        map.getMapXY(j, i) == map.getMapXY(j + 1, i)&&
+                        !map.isFree(j,i)
+                        ){
+                    countOfSameSymbolsVertical ++;
+                    if (countOfSameSymbolsVertical == map.getSize() - 1){
+                        result = true;
+                        winner = getPlayer(map.getMapXY(j,i));
+                        System.out.println("Верт " + j + " " + i + " " + countOfSameSymbolsVertical);
+                    }
+                }
 
-                    //Проверяем диагонали
-                    (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,2))||
-                    (map.getMapXY(2,2) == player2.getSymbol()) && (map.getMapXY(2,2) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(0,0))
-                ){
-            winner = player2;
-            return true;
-        } else { return false; }
+            }
+
+            //Диагонали
+            //Прямая
+            if (i < map.getSize() - 1&&
+                    map.getMapXY(i, i) == map.getMapXY(i+1, i+1)&&
+                    !map.isFree(i,i)
+                    ){
+                countOfSameSymbolsDiagonal1 ++;
+                if (countOfSameSymbolsDiagonal1 == map.getSize() - 1){
+                    result = true;
+                    winner = getPlayer(map.getMapXY(i,i));
+                    System.out.println("Дпр " + i + " " + i);
+                }
+            }
+
+            //Обратная
+            if (i < map.getSize() - 1&&
+                    map.getMapXY(i, map.getSize() - 1 - i) == map.getMapXY(i + 1, map.getSize() - i - 2)
+                    &&
+                    !map.isFree(i,map.getSize() - 1-i)){
+                countOfSameSymbolsDiagonal2 ++;
+                if (countOfSameSymbolsDiagonal2 == map.getSize() - 1){
+                    result = true;
+                    winner = getPlayer(map.getMapXY(i,map.getSize() - 1 - i));
+                    System.out.println("Добр " + i + " " + i);
+                }
+            }
 
 
-//        for (int i = 0; i < map.getSize(); i++) {
-//            for (int j = 0; j < map.getSize(); j++) {
-//                if (map.getMapXY(i, j) == map.getMapXY(i+1, j) == map.getMapXY())
-//            }
-//        }
+        }
+
+        return result;
     }
 
     public boolean checkTie(){
@@ -110,6 +174,11 @@ public class Game {
         return winner;
     }
 
+    public Player getPlayer (char symbol){
+        if (player1.getSymbol() == symbol){
+            return player1;
+        } else if (player2.getSymbol() == symbol) {return player2; } else return null;
+    }
 
 
 }
