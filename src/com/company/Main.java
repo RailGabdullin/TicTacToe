@@ -9,13 +9,14 @@ public class Main {
 
     private static char playerChar1 = 'X';
     private static char playerChar2 = '0';
-    private static int mapSize = 3;
+    private static int mapSize = 4;
     private static Player player1;
     private static Player player2;
     private static Map map;
     private static Game game;
     private static boolean player1IsHuman = true;
     private static boolean player2IsHuman = false;
+    private static boolean isSmart = true;
 
     public static void main(String[] args) {
 
@@ -25,7 +26,7 @@ public class Main {
 
 
         System.out.println("Введите имя второго игрока");
-        player2 = new Player(playerChar2, scanner.nextLine(), player2IsHuman);
+        player2 = new Player(playerChar2, scanner.nextLine(), player2IsHuman, true);
 
         map = new Map(mapSize, player1, player2);
         game = new Game(map, player1,player2);
@@ -36,7 +37,6 @@ public class Main {
         while (onGame){
             if (!game.checkWinner() && !game.checkTie()){
                 game.nextStep();
-                System.out.println("Сработало условие для следующего хода");
             } else {
                 if (game.checkWinner()){
                     System.out.println("Победил " + game.getWinner().getName() + ", который играет за " + game.getWinner().getSymbol());} else {

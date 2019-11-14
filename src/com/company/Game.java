@@ -89,91 +89,141 @@ public class Game {
                 }
             }
 
+            //ОТЛАДКА: ВЫВОД ТАБЛИЦЫ ЦЕННОСТИ
+            //____________
+            System.out.println("Smart step 1");
+            System.out.print("  ");
+            for (int j = 0; j < valueMap.length; j++) {
+                System.out.print(j);
+                System.out.print(" ");
+            }
+            System.out.println();
+            for (int i = 0; i < valueMap.length; i++) {
+                System.out.print(i);
+                for (int j = 0; j < valueMap.length; j++) {
+                    System.out.print(" ");
+                    System.out.print(valueMap[i][j]);
+                }
+                System.out.println();
+            }
+            System.out.println("*******");
+            //___________
+
             int numberOfFriendlySymbolsHor;
-            int isThereEnemySymbolHor;
+            boolean isThereEnemySymbolHor;
             int numberOfFriendlySymbolsVer;
-            int isThereEnemySymbolVer;
+            boolean isThereEnemySymbolVer;
             int numberOfFriendlySymbolsDiagonalDirect = 0;
-            int isThereEnemySymbolDiagonalDirect = 1;
-            int numberOfFriendlySymbolsDiagonalReves = 0;
-            int isThereEnemySymbolDiagonalRever = 1;
+            boolean isThereEnemySymbolDiagonalDirect = false;
+            int numberOfFriendlySymbolsDiagonalRevers = 0;
+            boolean isThereEnemySymbolDiagonalRevers = false;
 
             for (int i = 0; i < map.getSize(); i++) {
+
+                numberOfFriendlySymbolsHor = 0;
+                isThereEnemySymbolHor = false;
+                numberOfFriendlySymbolsVer = 0;
+                isThereEnemySymbolVer = false;
 
                 //Считаем число дружественных символов
                 //и проверяем наличие символов противника
                 //Число дружестенных символов в лайне записываем в счетчик umberOfFriendlySymbols,
-                //При обнаружении врага в лайне переключаем флаг isThereEnemySymbol из 1 в 0.
-
-                numberOfFriendlySymbolsHor = 0;
-                isThereEnemySymbolHor = 1;
-
-                numberOfFriendlySymbolsVer = 0;
-                isThereEnemySymbolVer = 1;
-
+                //При обнаружении врага в лайне переключаем флаг isThereEnemySymbol из false в true.
+                //В основном цикле только считаем необходимые переменные для добавочного валью. Прибавим его к ячейкам отдельным
+                //циклом
                 for (int j = 0; j < map.getSize(); j++) {
 
                     //Считаем вертикали
-                    if(map.getMapXY(i,j) == currentPlayer.getSymbol()){
+                    if (map.getMapXY(i, j) == currentPlayer.getSymbol()) {
                         numberOfFriendlySymbolsHor++;
                     }
-                    if(map.getMapXY(i,j) == getEnemy(currentPlayer).getSymbol()){
-                        isThereEnemySymbolHor = 0;
+                    if (map.getMapXY(i, j) == getEnemy(currentPlayer).getSymbol()) {
+                        isThereEnemySymbolHor = true;
                     }
 
                     //Считаем горизонтали
-                    if(map.getMapXY(j , i) == currentPlayer.getSymbol()){
+                    if (map.getMapXY(j, i) == currentPlayer.getSymbol()) {
                         numberOfFriendlySymbolsVer++;
                     }
-                    if(map.getMapXY(j , i) == getEnemy(currentPlayer).getSymbol()){
-                        isThereEnemySymbolVer = 0;
+                    if (map.getMapXY(j, i) == getEnemy(currentPlayer).getSymbol()) {
+                        isThereEnemySymbolVer = true;
                     }
 
-
-                    //Прибавляем результат к дефолтному валью в ячейках valueMap. Если враг обнаружен в лайне, то переключаем флаг isThereEnemySymbol из 1 в 0
-                    //Умножаем получиное число дружественных символов numberOfFriendlySymbols на флаг. Таким образом, если враг обнаружен,
-                    //то их произведение будет давать ноль и ничего не прибавится. Если врага не будет, то произведение
-                    //счетчика с единицей никак не изменится и просто прибавится к валью.
-                    //Таким образом избежали здесь еще одного if-а.
-
-                    //Пришлось сделать здесь еще один цикл, так как нам нужно прибавлять уже итоговую сумму ко всем ячекам в лайне. Делать это пока линя
-                    //до конца не посчитана невозможно. Поэтому сначала заканчиваем цикл подсчета добавочного валью, а в другом
-                    //цикле прибавляем это валью ко всем ячейкам в этом лайне.
                 }
+
+                //Цикл прибавляет уже итоговую сумму вертикалей и диагоналей ко всем ячекам в лайне либо уменьшаяет
+                // ценность на единицу, если в лайне есть символ противника. Делать это пока линя
+                //до конца не посчитана невозможно. Поэтому сначала заканчиваем предыдущий цикл подсчета добавочного валью, а в этом
+                //цикле прибавляем это валью ко всем ячейкам в этом лайне.
                 for (int j = 0; j < map.getSize(); j++) {
-                    valueMap[i][j] = valueMap[i][j] + (numberOfFriendlySymbolsHor * isThereEnemySymbolHor);
-                    valueMap[j][i] = valueMap[j][i] + (numberOfFriendlySymbolsVer * isThereEnemySymbolVer);
+                    if (!isThereEnemySymbolHor) {
+                        valueMap[i][j] = valueMap[i][j] + numberOfFriendlySymbolsHor;
+                    } else {
+                        valueMap[i][j] = valueMap[i][j] - 1;
+                    }
 
-
+                    if (!isThereEnemySymbolVer){
+                        valueMap[j][i] = valueMap[j][i] + numberOfFriendlySymbolsVer;
+                    } else {
+                        valueMap[j][i] = valueMap[j][i] - 1;
+                    }
                 }
 
                 //Также проходим прямую диагональ.
-                //В основном цикле только считаем необходимые переменные для добавочного валью. Прибавим его к ячейкам отдельным
-                //циклом
                 if(map.getMapXY(i , i) == currentPlayer.getSymbol()){
                     numberOfFriendlySymbolsDiagonalDirect++;
                 }
                 if(map.getMapXY(i , i) == getEnemy(currentPlayer).getSymbol()){
-                    isThereEnemySymbolDiagonalDirect = 0;
+                    isThereEnemySymbolDiagonalDirect = true;
                 }
 
                 //Обратная диагональ
                 if(map.getMapXY(i , map.getSize() - 1 - i) == currentPlayer.getSymbol()){
-                    numberOfFriendlySymbolsDiagonalReves++;
+                    numberOfFriendlySymbolsDiagonalRevers++;
                 }
                 if(map.getMapXY(i , map.getSize() - 1 - i) == getEnemy(currentPlayer).getSymbol()){
-                    isThereEnemySymbolDiagonalRever = 0;
+                    isThereEnemySymbolDiagonalRevers = true;
                 }
 
             }
 
             //Прибавляем добавочные валью диагоналей имеющимся валью ячеек
             for (int i = 0; i < map.getSize(); i++) {
-                valueMap[i][i] = valueMap[i][i] + (numberOfFriendlySymbolsDiagonalDirect * isThereEnemySymbolDiagonalDirect);
-                valueMap[i][map.getSize() - 1 - i] = valueMap[i][map.getSize() - 1 - i] + (numberOfFriendlySymbolsDiagonalReves * isThereEnemySymbolDiagonalRever);
+                if (!isThereEnemySymbolDiagonalDirect) {
+                    valueMap[i][i] = valueMap[i][i] + numberOfFriendlySymbolsDiagonalDirect;
+                } else {
+                    valueMap[i][i] = valueMap[i][i] - 1;
+                }
+
+                if (!isThereEnemySymbolDiagonalRevers) {
+                    valueMap[i][map.getSize() - 1 - i] = valueMap[i][map.getSize() - 1 - i] + numberOfFriendlySymbolsDiagonalRevers;
+                } else {
+                    valueMap[i][map.getSize() - 1 - i] = valueMap[i][map.getSize() - 1 - i] - 1;
+                }
+
             }
 
-            //Еще раз пройдемся по игровому полю, чтобы обнулить в карте ценностей уже заполненные ячейки, так как туда
+            //ОТЛАДКА: ВЫВОД ТАБЛИЦЫ ЦЕННОСТИ
+            //____________
+            System.out.println("Smart step 2");
+            System.out.print("  ");
+            for (int j = 0; j < valueMap.length; j++) {
+                System.out.print(j);
+                System.out.print(" ");
+            }
+            System.out.println();
+            for (int i = 0; i < valueMap.length; i++) {
+                System.out.print(i);
+                for (int j = 0; j < valueMap.length; j++) {
+                    System.out.print(" ");
+                    System.out.print(valueMap[i][j]);
+                }
+                System.out.println();
+            }
+            System.out.println("*******");
+            //___________
+
+            //Еще раз пройдемся по игровому полю, чтобы обнулить в карте ценностей уже занятые ячейки, так как туда
             //сходит все равно не получится
             for (int i = 0; i < map.getSize(); i++) {
                 for (int j = 0; j < map.getSize(); j++) {
@@ -182,6 +232,26 @@ public class Game {
                     }
                 }
             }
+
+            //ОТЛАДКА: ВЫВОД ТАБЛИЦЫ ЦЕННОСТИ
+            //____________
+            System.out.println("Smart step 3");
+            System.out.print("  ");
+            for (int j = 0; j < valueMap.length; j++) {
+                System.out.print(j);
+                System.out.print(" ");
+            }
+            System.out.println();
+            for (int i = 0; i < valueMap.length; i++) {
+                System.out.print(i);
+                for (int j = 0; j < valueMap.length; j++) {
+                    System.out.print(" ");
+                    System.out.print(valueMap[i][j]);
+                }
+                System.out.println();
+            }
+            System.out.println("*******");
+            //___________
 
             //Теперь пройдемся по valueMap и найдем ячейку с максимальным значением ценности
             int maxValue = 0;
@@ -201,6 +271,7 @@ public class Game {
             x = xMaxValue;
             y = yMaxValue;
 
+
         }
 
         //Передаем координаты ячейки в которую хотим сходить и печатаем новую карту
@@ -212,43 +283,6 @@ public class Game {
 
     public boolean checkWinner(){
 
-//        //Ща будет хардкод, переделать
-//        if (
-//                //Проверяем горизонтали
-//                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(0,1) && map.getMapXY(0,1) == map.getMapXY(0,2))||
-//                (map.getMapXY(1,0) == player1.getSymbol()) && (map.getMapXY(1,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(1,2))||
-//                (map.getMapXY(2,0) == player1.getSymbol()) && (map.getMapXY(2,0) == map.getMapXY(2,1) && map.getMapXY(2,1) == map.getMapXY(2,2))||
-//
-//                        //Проверяем вертикали
-//                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,0) && map.getMapXY(1,0) == map.getMapXY(2,0))||
-//                (map.getMapXY(0,1) == player1.getSymbol()) && (map.getMapXY(0,1) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,1))||
-//                (map.getMapXY(0,2) == player1.getSymbol()) && (map.getMapXY(0,2) == map.getMapXY(1,2) && map.getMapXY(1,2) == map.getMapXY(2,2))||
-//
-//                        //Проверяем диагонали
-//                (map.getMapXY(0,0) == player1.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,2))||
-//                (map.getMapXY(2,2) == player1.getSymbol()) && (map.getMapXY(2,2) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(0,0))
-//
-//                ){
-//            winner = player1;
-//            return true;
-//        } else if (
-//            //Проверяем горизонтали
-//            (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(0,1) && map.getMapXY(0,1) == map.getMapXY(0,2))||
-//                    (map.getMapXY(1,0) == player2.getSymbol()) && (map.getMapXY(1,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(1,2))||
-//                    (map.getMapXY(2,0) == player2.getSymbol()) && (map.getMapXY(2,0) == map.getMapXY(2,1) && map.getMapXY(2,1) == map.getMapXY(2,2))||
-//
-//                    //Проверяем вертикали
-//                    (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,0) && map.getMapXY(1,0) == map.getMapXY(2,0))||
-//                    (map.getMapXY(0,1) == player2.getSymbol()) && (map.getMapXY(0,1) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,1))||
-//                    (map.getMapXY(0,2) == player2.getSymbol()) && (map.getMapXY(0,2) == map.getMapXY(1,2) && map.getMapXY(1,2) == map.getMapXY(2,2))||
-//
-//                    //Проверяем диагонали
-//                    (map.getMapXY(0,0) == player2.getSymbol()) && (map.getMapXY(0,0) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(2,2))||
-//                    (map.getMapXY(2,2) == player2.getSymbol()) && (map.getMapXY(2,2) == map.getMapXY(1,1) && map.getMapXY(1,1) == map.getMapXY(0,0))
-//                ){
-//            winner = player2;
-//            return true;
-//        } else { return false; }
 
         //В цикле считаем число свопадающих символов отдельно в вертикалях, горизонталях и двух диагоналях.
         //Если где-то символов становится столько же сколько размер карты, значит строка полная - выигрыш. Переключаем флаг наличия

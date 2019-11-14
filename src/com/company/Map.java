@@ -40,6 +40,7 @@ public class Map {
             }
             System.out.println();
         }
+        System.out.println("*******");
     }
 
     public boolean isFree (int x, int y) {
@@ -65,6 +66,5 @@ public class Map {
     public boolean isValid(int x, int y){
         return x >= 0 && x <= mapSize - 1 && y >= 0 && y <= mapSize - 1;
     }
-
 
 }
