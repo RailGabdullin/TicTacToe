@@ -1,24 +1,21 @@
 package com.company;
 
+import java.util.Scanner;
+
 public class Player {
 
-    private char symbol;
-    private String name;
-    private boolean isHuman;
-    private boolean isSmart = false;
+    char symbol;
+    String name;
+    Scanner scanner = new Scanner(System.in);
 
-    public Player(char symbol, String name, boolean isHuman) {
-        this.symbol = symbol;
-        this.name = name;
-        this.isHuman = isHuman;
+    public Player() {
+        System.out.print("Введите имя игрока: ");
+        this.name = scanner.nextLine();
+        System.out.println();
+        System.out.print("Какими символами он будет играть? ");
+        this.symbol = scanner.next().charAt(0);
     }
 
-    public Player(char symbol, String name, boolean isHuman, boolean isSmart) {
-        this.symbol = symbol;
-        this.name = name;
-        this.isHuman = isHuman;
-        this.isSmart = isSmart;
-    }
 
     public char getSymbol() {
         return symbol;
@@ -28,11 +25,15 @@ public class Player {
         return name;
     }
 
-    public boolean isHuman() {
-        return isHuman;
+    public Result generateXY(){
+        int x, y;
+        do {
+            x = (int) (Math.random() * Game.getMap().getSize());
+            y = (int) (Math.random() * Game.getMap().getSize());
+            System.out.println("Сгенерировали ход автоматически");
+        }
+        while (!Game.getMap().isFree(x, y));
+        return new Result(x,y);
     }
 
-    public boolean isSmart() {
-        return isSmart;
-    }
 }

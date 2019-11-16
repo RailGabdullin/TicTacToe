@@ -1,5 +1,7 @@
 package com.company;
 
+import java.util.Scanner;
+
 public class Map {
 
     private int mapSize;
@@ -9,10 +11,14 @@ public class Map {
     private char player1;
     private char player2;
 
+    private Scanner scanner = new Scanner(System.in);
+
     private char noSymbol;
 
-    public Map(int mapSize, Player player1, Player player2){
-        this.mapSize = mapSize;
+    public Map(Player player1, Player player2){
+//        System.out.print("Введите размер поля: ");
+//        this.mapSize = scanner.nextInt();
+        this.mapSize = 3;
         this.player1 = player1.getSymbol();
         this.player2 = player2.getSymbol();
         this.noSymbol = '*';
